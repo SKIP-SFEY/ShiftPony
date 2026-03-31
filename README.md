@@ -94,9 +94,9 @@
 
 ## Над проектом работают:
 
-[<img src="https://avatars.githubusercontent.com/u/67832375?v=4" width="100">](https://github.com/Swipexe) 
+[<img src="https://avatars.githubusercontent.com/u/67832375?v=4" width="100">](https://github.com/Swipexe) Swipexe
 
-[<img src="https://avatars.githubusercontent.com/u/215003283?v=4" width="100">](https://github.com/SKIP-SFEY)
+[<img src="https://avatars.githubusercontent.com/u/215003283?v=4" width="100">](https://github.com/SKIP-SFEY) SKIP-SFEY
 
 
 **ShiftPony** — пони покажет, кто сегодня в стойле.
