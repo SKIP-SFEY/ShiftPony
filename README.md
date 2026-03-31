@@ -94,7 +94,9 @@
 
 ## Над проектом работают:
 
-[![Swipexe]([https://img.shields.io/badge/GitHub-@yourusername-181717?style=for-the-badge&logo=github](https://avatars.githubusercontent.com/u/67832375?v=4))](https://github.com/Swipexe)
+[<img src="https://avatars.githubusercontent.com/u/67832375?v=4" width="100">](https://github.com/Swipexe) 
+
+[<img src="https://avatars.githubusercontent.com/u/215003283?v=4" width="100">](https://github.com/SKIP-SFEY)
 
 
 **ShiftPony** — пони покажет, кто сегодня в стойле.
