@@ -98,5 +98,7 @@
 
 [<img src="https://avatars.githubusercontent.com/u/215003283?v=4" width="100">](https://github.com/SKIP-SFEY) SKIP-SFEY
 
+[<img src="https://avatars.githubusercontent.com/u/155392354?v=4" width="100">](https://github.com/pososun2024) pososun2024
+
 
 **ShiftPony** — пони покажет, кто сегодня в стойле.
