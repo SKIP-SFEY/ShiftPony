@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Планировщик смен · Оборудование</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f4f6f9;
+      padding: 24px 32px;
+      color: #1e1f22;
+    }
+
+    /* Основной контейнер  */
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Заголовок */
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .subhead {
+      font-size: 16px;
+      color: #5b6778;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #d7dde4;
+      padding-bottom: 18px;
+    }
+
+    /* Панель управления  */
+    .panel {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 28px;
+      background: white;
+      padding: 12px 24px;
+      border-radius: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e6eaf0;
+    }
+
+    .panel-item {
+      font-size: 17px;
+      font-weight: 500;
+      color: #1e293b;
+      cursor: default;
+      padding: 6px 0;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.1s;
+    }
+
+    /* Оборудование*/
+    .panel-item.active {
+      color: #0f3b5e;
+      border-bottom: 3px solid #2b6a9e;
+    }
+
+    /* Секция оборудования */
+    .equipment-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    /* Карточки */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e9edf2;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 30px;
+      background: #eef2f6;
+      color: #2c3e50;
+    }
+
+    .badge-success {
+      background: #e2f3e4;
+      color: #0e6245;
+    }
+
+    .badge-warning {
+      background: #fff1d7;
+      color: #a16500;
+    }
+
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 6px;
+      color: #4a5a6e;
+      font-size: 15px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .location {
+      font-weight: 500;
+      color: #2e405b;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 10px;
+      background: #22a06b;
+    }
+
+    .status-dot.used {
+      background: #e56910;
+    }
+
+    .status-text {
+      font-weight: 500;
+    }
+
+    /* Кнопка добавить (простая) */
+    .add-button {
+      background: white;
+      border: 1.5px dashed #a0b3c9;
+      border-radius: 40px;
+      padding: 14px 24px;
+      font-size: 17px;
+      font-weight: 500;
+      color: #1e3a5f;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      cursor: default;
+      transition: background 0.15s;
+      box-shadow: none;
+    }
+
+    .add-button:hover {
+      background: #fafbfc;
+    }
+
+    /* preview-блок (только визуал) */
+    .preview-toolbar {
+      margin-top: 32px;
+      padding: 12px 0;
+      border-top: 1px solid #dae0e8;
+      display: flex;
+      gap: 28px;
+      font-size: 15px;
+      color: #3e5f7a;
+    }
+
+    .preview-link {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 4px;
+      cursor: default;
+    }
+
+    .restore-link {
+      color: #2e5f8e;
+      font-weight: 500;
+      cursor: default;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #dee4ec;
+      margin: 10px 0 0;
+    }
+
+    /* маленькая иконка эмулируется текстом */
+    .icon-tag::before {
+      content: "🏷️";
+      margin-right: 4px;
+    }
+    .icon-pin::before {
+      content: "📍";
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- Заголовок -->
+  <h1>Планировщик смен</h1>
+  <div class="subhead">Управление сменами и оборудованием</div>
+
+  <!-- Панель управления: Расписание, Сотрудники, Оборудование -->
+  <div class="panel">
+    <div class="panel-item"> Расписание</div>
+    <div class="panel-item"> Сотрудники</div>
+    <div class="panel-item active">🔧 Оборудование</div>
+  </div>
+
+  <!-- Заголовок раздела "Оборудование" -->
+  <div class="equipment-header">
+    <h2>Оборудование</h2>
+    <span style="color:#54708f; font-size:15px;">Управление инструментами и оборудованием</span>
+  </div>
+
+  <!-- Карточки оборудования — в точности как на скриншоте -->
+  <div class="card-grid">
+    <!-- 1. Паяльная станция -->
+    <div class="card">
+      <div class="card-left">
+        <div class="card-title">
+           Паяльная станция
+          <span class="badge">Инструмент</span>
+        </div>
+        <div class="meta-line">
+          <span class="meta-item"><span class="icon-tag"></span>Сер. номер PS-2024-001</span>
+          <span class="meta-item"><span class="icon-pin"></span>Лаборатория A</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Доступно</span>
+      </div>
+    </div>
+
+    <!-- 2. Мультиметр Fluke 87V — с пометкой "Используется" -->
+    <div class="card">
+      <div class="card-left">
+        <div class="card-title">
+          Мультиметр Fluke 87V
+          <span class="badge">Измерительное оборудование</span>
+        </div>
+        <div class="meta-line">
+          <span class="meta-item"><span class="icon-tag"></span>Сер. номер MM-2024-015</span>
+          <span class="meta-item"><span class="icon-pin"></span>Лаборатория B</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot used"></span>
+        <span class="status-text" style="color:#b85b14;">Используется</span>
+      </div>
+    </div>
+
+    <!-- 3. Осциллограф -->
+    <div class="card">
+      <div class="card-left">
+        <div class="card-title">
+          Осциллограф
+          <span class="badge">Измерительное оборудование</span>
+        </div>
+        <div class="meta-line">
+          <span class="meta-item"><span class="icon-tag"></span>Сер. номер OSC-2024-003</span>
+          <span class="meta-item"><span class="icon-pin"></span>Лаборатория A</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Доступно</span>
+      </div>
+    </div>
+
+    <!-- 4. Набор отверток -->
+    <div class="card">
+      <div class="card-left">
+        <div class="card-title">
+        Набор отверток
+          <span class="badge">Инструмент</span>
+        </div>
+        <div class="meta-line">
+          <span class="meta-item"><span class="icon-tag"></span>Сер. номер TOOLS-2024-042</span>
+          <span class="meta-item"><span class="icon-pin"></span>Склад</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Доступно</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кнопка "Добавить оборудование" (некликабельная, визуал) -->
+  <div class="add-button">
+    <span style="font-size:22px; line-height:1;">+</span> Добавить оборудование
+  </div>
+
+
+
+
+</body>
+</html>
