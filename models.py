@@ -11,7 +11,6 @@ class Workers(SQLModel, table=True):
     slave: str = Field(nullable=False)
     icon_url: str = Field(nullable=False)
 
-    # Отношения (исправлены типы и имена)
     schedules: List["Schedule"] = Relationship(back_populates="worker")
     equipments: List["Equipment"] = Relationship(back_populates="worker")
 
@@ -21,10 +20,8 @@ class Schedule(SQLModel, table=True):
     task: str = Field(nullable=False)
     pisun: str = Field(nullable=False)
 
-    # Внешний ключ – должен быть того же типа, что и Workers.id (int)
     worker_id: int = Field(foreign_key="workers.id")
 
-    # Обратная связь
     worker: Workers = Relationship(back_populates="schedules")
 
 class Equipment(SQLModel, table=True):
@@ -35,8 +32,6 @@ class Equipment(SQLModel, table=True):
     status: str = Field(nullable=False)
     place: str = Field(nullable=False)
 
-    # Внешний ключ (отдельное поле, не первичный ключ)
     worker_id: int = Field(foreign_key="workers.id")
 
-    # Обратная связь
     worker: Workers = Relationship(back_populates="equipments")
