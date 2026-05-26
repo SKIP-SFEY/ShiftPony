@@ -1,0 +1,7 @@
+{
+  "name": "Shift Planner Supporting Service",
+  "description": "Вспомогательный FastAPI-сервис для API Gateway: авторизация, отчетность, аналитика и уведомления в JSON-формате.",
+  "database": "PostgreSQL",
+  "data_source": "employees, equipment, users, shifts, supporting_report_runs, supporting_notifications",
+  "version": "1.0.0"
+}

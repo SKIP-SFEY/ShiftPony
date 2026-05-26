@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supporting Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='supporting.css') }}">
+</head>
+<body>
+    <div class="container" id="supportApp">
+        <div class="header">
+            <div>
+                <div class="logo">Supporting Service</div>
+            </div>
+            <div class="header-actions">
+                <button class="profile-btn" id="refreshBtn">Обновить</button>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <section class="support-grid">
+                <div class="support-card">
+                    <h3>Открытый режим</h3>
+                    <p class="hint">Авторизация в supporting_service полностью отключена. Все JSON-эндпоинты отчётов, аналитики и уведомлений доступны без JWT.</p>
+                    <button class="add-btn full-btn" id="refreshBtnInfo" onclick="document.getElementById('refreshBtn').click()">Обновить данные</button>
+                </div>
+
+                <div class="support-card">
+                    <h3>Hash API</h3>
+                    <p class="hint">Проверка обязательного эндпоинта /api/hash/&lt;str&gt;.</p>
+                    <input id="hashInput" type="text" placeholder="Введите строку">
+                    <button class="add-btn full-btn" id="hashBtn">Получить hash</button>
+                    <pre class="json-box" id="hashResult">Результат появится здесь</pre>
+                </div>
+            </section>
+
+            <section class="stats-grid" id="statsGrid">
+                <div class="stat-card"><div class="stat-number">—</div><div class="stat-label">Сотрудники</div></div>
+                <div class="stat-card"><div class="stat-number">—</div><div class="stat-label">Оборудование</div></div>
+                <div class="stat-card"><div class="stat-number">—</div><div class="stat-label">Смены</div></div>
+                <div class="stat-card"><div class="stat-number">—</div><div class="stat-label">Уведомления</div></div>
+            </section>
+
+            <div class="admin-nav support-nav">
+                <button class="nav-tab active" data-tab="analytics">Аналитика</button>
+                <button class="nav-tab" data-tab="reports">Отчёты</button>
+                <button class="nav-tab" data-tab="notifications">Уведомления</button>
+                <button class="nav-tab" data-tab="gateway">Gateway</button>
+                <button class="nav-tab" data-tab="about">About JSON</button>
+            </div>
+
+            <section id="tabAnalytics" class="tab-section">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Смены по статусам</h3>
+                        <div class="chart-box"><canvas id="shiftsChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Оборудование по статусам</h3>
+                        <div class="chart-box"><canvas id="equipmentChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Сотрудник</th><th>Количество смен</th></tr></thead>
+                        <tbody id="workloadBody"><tr><td colspan="2">Нажмите «Обновить»</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tabReports" class="tab-section hidden">
+                <div class="toolbar">
+                    <input id="dateFrom" type="date">
+                    <input id="dateTo" type="date">
+                    <select id="statusFilter">
+                        <option value="">Все статусы</option>
+                        <option value="Запланирована">Запланирована</option>
+                        <option value="Выполнена">Выполнена</option>
+                        <option value="Отменена">Отменена</option>
+                    </select>
+                    <button class="add-btn" id="reportsBtn">Сформировать</button>
+                </div>
+                <pre class="json-box" id="summaryBox">Сводный отчёт появится здесь</pre>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Дата</th><th>Время</th><th>Сотрудник</th><th>Оборудование</th><th>Статус</th></tr></thead>
+                        <tbody id="shiftsReportBody"><tr><td colspan="5">Нет данных</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tabNotifications" class="tab-section hidden">
+                <div class="support-grid">
+                    <div class="support-card">
+                        <h3>Создать уведомление</h3>
+                        <input id="noticeTitle" type="text" placeholder="Заголовок">
+                        <textarea id="noticeMessage" placeholder="Текст уведомления"></textarea>
+                        <input id="noticeUserId" type="number" min="1" placeholder="ID пользователя, необязательно">
+                        <select id="noticeType">
+                            <option value="info">info</option>
+                            <option value="warning">warning</option>
+                            <option value="success">success</option>
+                        </select>
+                        <button class="add-btn full-btn" id="createNoticeBtn">Создать</button>
+                    </div>
+                    <div class="support-card">
+                        <h3>Список уведомлений</h3>
+                        <p class="hint">Уведомления доступны открыто. Можно оставить фильтр пустым, чтобы показать все записи.</p>
+                        <input id="noticeUserFilter" type="number" min="1" placeholder="Фильтр по ID пользователя, необязательно">
+                        <button class="profile-btn" id="loadNoticesBtn">Загрузить уведомления</button>
+                        <div id="notificationsList" class="notice-list">Пока нет данных</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tabGateway" class="tab-section hidden">
+                <p class="hint">Маршруты, которые отдаёт API Gateway второго сервиса.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Метод</th><th>Путь</th><th>Группа</th></tr></thead>
+                        <tbody id="routesBody"><tr><td colspan="3">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tabAbout" class="tab-section hidden">
+                <p class="hint">Данные берутся из файла supporting_service/about.json через /api/about.</p>
+                <pre class="json-box" id="aboutBox">Загрузка...</pre>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='supporting.js') }}"></script>
+</body>
+</html>
